@@ -1,15 +1,15 @@
 <template>
-	<hello-world />
+	<time-record />
 </template>
 
 <script>
-import HelloWorld from '../components/HelloWorld';
+import TimeRecord from '@/components/TimeRecord.vue';
 
 export default {
 	name: 'Home',
 
 	components: {
-		HelloWorld
+		TimeRecord
 	}
 };
 </script>
