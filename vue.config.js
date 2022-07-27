@@ -7,13 +7,13 @@ function resolve(dir) {
 module.exports = defineConfig({
 	publicPath: '/redmine',
 	transpileDependencies: ['vuetify'],
-	// css: {
-	// 	loaderOptions: {
-	// 		scss: {
-	// 			additionalData: `@import "@/scss/helpers/_theme-colors.scss";`
-	// 		}
-	// 	}
-	// },
+	css: {
+		loaderOptions: {
+			scss: {
+				additionalData: `@import "@/scss/helpers/_theme-colors.scss";`
+			}
+		}
+	},
 	productionSourceMap: false,
 	chainWebpack: (config) => {
 		config.resolve.alias.set('@', resolve('src'));
