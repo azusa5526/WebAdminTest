@@ -6,6 +6,8 @@ import vuetify from './plugins/vuetify';
 import 'roboto-fontface/css/roboto/roboto-fontface.css';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
 import SvgIcon from '@/components/widget/SvgIcon';
+import axios from 'axios';
+import VueAxios from 'vue-axios';
 
 Vue.config.productionTip = false;
 
@@ -14,6 +16,9 @@ const requireAll = (requireContext) => requireContext.keys().map(requireContext)
 const req = require.context('@/assets/icon', true, /\.svg$/);
 requireAll(req);
 Vue.component('icon', SvgIcon);
+
+// axios
+Vue.use(VueAxios, axios);
 
 new Vue({
 	router,
