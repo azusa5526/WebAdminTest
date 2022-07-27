@@ -1,0 +1,23 @@
+@for $i from 0 through 10 {
+	.opacity-#{$i} {
+		opacity: $i * 0.1;
+	}
+}
+
+@for $i from 0 through 3 {
+	.ls-#{$i} {
+		letter-spacing: #{$i}px;
+	}
+}
+
+@for $i from 0 through 100 {
+	.h-#{$i} {
+		height: #{$i}#{'%'};
+	}
+}
+
+@for $i from 0 through 100 {
+	.w-#{$i} {
+		width: #{$i}#{'%'};
+	}
+}
