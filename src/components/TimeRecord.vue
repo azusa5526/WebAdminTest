@@ -1,9 +1,9 @@
 <template>
 	<layout-content-container>
 		<template v-slot:page>
-			<v-card color="basil" class="mt-0 mt-sm-4">
-				<v-card-title class="text-center justify-center py-6">
-					<h1 class="font-weight-bold text-h2 basil--text">BASiL</h1>
+			<v-card color="basil" class="fill-height">
+				<v-card-title class="accentDarken1 white--text text-center justify-center pa-2 pa-sm-4">
+					<h1 class="font-weight-bold text-body-2 text-sm-h6 keep-word">{{ title }}</h1>
 				</v-card-title>
 
 				<v-tabs v-model="tab" background-color="transparent" color="basil" grow>
@@ -30,6 +30,7 @@
 import LayoutContentContainer from '@/views/layout/LayoutContentContainer.vue';
 import MultiRecord from '@/components/TabComponents/MultiRecord.vue';
 import Other from '@/components/TabComponents/Other.vue';
+import titleArray from '../../public/title.json';
 
 export default {
 	components: {
@@ -43,6 +44,18 @@ export default {
 		tab: null,
 		items: ['MultiRecord', 'Other']
 	})
+		title: 'Welcome to Bluemine'
+	created() {
+		this.setTitle();
+	},
+
+	methods: {
+		setTitle() {
+			if (titleArray.length) {
+				this.title = titleArray[Math.floor(Math.random() * titleArray.length)];
+			}
+		}
+	}
 };
 </script>
 
