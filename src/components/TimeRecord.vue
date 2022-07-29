@@ -7,16 +7,16 @@
 				</v-card-title>
 
 				<v-tabs v-model="tab" background-color="transparent" color="basil" grow>
-					<v-tab v-for="item in items" :key="item">
-						{{ item }}
+					<v-tab v-for="(item, index) in items" :key="index" class="text-body-1 font-weight-bold" :class="{ light: tab === index }">
+						{{ item.displayName }}
 					</v-tab>
 				</v-tabs>
 
 				<v-tabs-items v-model="tab">
-					<v-tab-item v-for="item in items" :key="item">
+					<v-tab-item v-for="(item, index) in items" :key="index">
 						<v-card color="basil" flat>
 							<v-card-text>
-								<component :is="items[tab]"></component>
+								<component :is="items[tab].componentName"></component>
 							</v-card-text>
 						</v-card>
 					</v-tab-item>
@@ -41,10 +41,15 @@ export default {
 	name: 'TimeRecord',
 
 	data: () => ({
-		tab: null,
-		items: ['MultiRecord', 'Other']
-	})
+		tab: 0,
+		items: [
+			{ componentName: 'MultiRecord', displayName: '工時記錄' },
+			{ componentName: 'Relationship', displayName: '檢視關係' },
+			{ componentName: 'Other', displayName: '其他功能' }
+		],
 		title: 'Welcome to Bluemine'
+	}),
+
 	created() {
 		this.setTitle();
 	},
