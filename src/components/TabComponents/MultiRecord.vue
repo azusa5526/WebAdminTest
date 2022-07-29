@@ -1,89 +1,134 @@
 <template>
 	<v-form>
-		<v-text-field
-			v-model.number.trim="inputIssueId"
-			@blur="issueBlurHandler()"
-			outlined
-			dense
-			:label="issue.subject ? `議題：${issue.subject}` : '議題號碼'"
-			prepend-icon="search"
-		>
-		</v-text-field>
-
-		<v-menu
-			v-model="menu"
-			:close-on-content-click="true"
-			bottom
-			left
-			:nudge-bottom="-20"
-			:nudge-left="-32"
-			transition="scale-transition"
-			offset-y
-			min-width="auto"
-		>
-			<template v-slot:activator="{ on, attrs }">
+		<validation-observer ref="observer" v-slot="{ invalid }">
+			<validation-provider v-slot="{ errors }" rules="required" name="議題號碼">
 				<v-text-field
-					v-model="timeEntries.spentOn"
-					label="日期*"
-					prepend-icon="today"
-					readonly
+					v-model.number.trim="inputIssueId"
+					@blur="issueBlurHandler()"
 					outlined
 					dense
-					v-bind="attrs"
-					v-on="on"
+					:label="issue.subject ? `議題：${issue.subject}` : '議題號碼*'"
+					:error-messages="errors"
+					prepend-icon="search"
+				>
+				</v-text-field>
+			</validation-provider>
+
+			<v-menu
+				v-model="menu"
+				:close-on-content-click="true"
+				bottom
+				left
+				:nudge-bottom="-20"
+				:nudge-left="-32"
+				transition="scale-transition"
+				offset-y
+				min-width="auto"
+			>
+				<template v-slot:activator="{ on, attrs }">
+					<validation-provider v-slot="{ errors }" rules="required" name="日期">
+						<v-text-field
+							v-model="timeEntries.spentOn"
+							label="日期*"
+							prepend-icon="today"
+							readonly
+							outlined
+							dense
+							:error-messages="errors"
+							v-bind="attrs"
+							v-on="on"
+						></v-text-field>
+					</validation-provider>
+				</template>
+				<v-date-picker v-model="timeEntries.spentOn" @input="menu = false" :day-format="getFormattedDay" color="primary"></v-date-picker>
+			</v-menu>
+
+			<validation-provider v-slot="{ errors }" rules="required" name="參與人員">
+				<div class="d-flex flex-nowrap">
+					<v-autocomplete
+						v-model="participants"
+						:items="filterdUsers"
+						dense
+						outlined
+						multiple
+						chips
+						deletable-chips
+						small-chips
+						item-text="name"
+						item-value="id"
+						label="參與人員"
+						:error-messages="errors"
+						prepend-icon="person_add"
+						style="border-radius: 4px 0 0 4px"
+					>
+					</v-autocomplete>
+					<v-btn
+						@click="participantsFunctionHandler()"
+						tile
+						:color="participants.length ? 'disabled' : 'primary'"
+						elevation="0"
+						height="40px"
+						class="text-h6 font-weight-bold"
+						style="border-radius: 0 4px 4px 0"
+						>{{ participants.length ? '清除' : '全選' }}</v-btn
+					>
+				</div>
+			</validation-provider>
+
+			<validation-provider v-slot="{ errors }" rules="required" name="耗用時數">
+				<v-text-field
+					v-model.number="timeEntries.hours"
+					outlined
+					dense
+					:error-messages="errors"
+					label="耗用時數*"
+					type="number"
+					prepend-icon="hourglass_bottom"
 				></v-text-field>
-			</template>
-			<v-date-picker v-model="timeEntries.spentOn" @input="menu = false" :day-format="getFormattedDay" color="primary"></v-date-picker>
-		</v-menu>
+			</validation-provider>
 
-		<div class="d-flex flex-nowrap">
-			<v-autocomplete
-				v-model="participants"
-				:items="filterdUsers"
-				dense
-				outlined
-				multiple
-				chips
-				deletable-chips
-				small-chips
-				item-text="name"
-				item-value="id"
-				label="參與人員"
-				prepend-icon="person_add"
-				style="border-radius: 4px 0 0 4px"
-			>
-			</v-autocomplete>
-			<v-btn
-				@click="participantsFunctionHandler()"
-				tile
-				:color="participants.length ? 'disabled' : 'primary'"
-				elevation="0"
-				height="40px"
-				class="text-h6 font-weight-bold"
-				style="border-radius: 0 4px 4px 0"
-				>{{ participants.length ? '清除' : '全選' }}</v-btn
-			>
-		</div>
+			<v-text-field v-model="timeEntries.comments" outlined dense label="描述" prepend-icon="comment"></v-text-field>
 
-		<v-text-field
-			v-model.number="timeEntries.hours"
-			outlined
-			dense
-			label="耗用時數*"
-			type="number"
-			prepend-icon="hourglass_bottom"
-		></v-text-field>
-		<v-text-field v-model="timeEntries.comments" outlined dense label="描述" prepend-icon="comment"></v-text-field>
-		<v-select v-model="timeEntries.activity_id" :items="activities" item-text="name" item-value="id" label="活動*" outlined dense>
-			<template v-slot:prepend>
-				<icon iconName="skateboarding_FILL0_wght400_GRAD0_opsz48" :width="24" :height="24" :color="'#757575'"></icon>
-			</template>
-		</v-select>
+			<validation-provider v-slot="{ errors }" rules="required" name="活動">
+				<v-select
+					v-model="timeEntries.activity_id"
+					:items="activities"
+					item-text="name"
+					item-value="id"
+					:error-messages="errors"
+					label="活動*"
+					outlined
+					dense
+				>
+					<template v-slot:prepend>
+						<icon iconName="skateboarding_FILL0_wght400_GRAD0_opsz48" :width="24" :height="24" :color="'#757575'"></icon>
+					</template>
+				</v-select>
+			</validation-provider>
 
-		<div class="d-flex flex-nowrap justify-end">
-			<v-btn @click="addIssuesHandler()" elevation="0" color="primary" height="40px" class="text-h6 font-weight-bold mr-3 px-8">建立</v-btn>
-			<v-btn @click="clearFormInput()" elevation="0" color="secondary" height="40px" class="text-h6 font-weight-bold px-8">清除</v-btn>
-		</div>
+			<div class="d-flex flex-nowrap justify-end">
+				<v-btn
+					@click="addIssuesHandler()"
+					:disabled="invalid"
+					elevation="0"
+					color="primary"
+					height="40px"
+					class="text-h6 font-weight-bold mr-3 px-8"
+					>建立</v-btn
+				>
+				<v-btn
+					@click="
+						clearFormInput();
+						resetFormValidate();
+					"
+					elevation="0"
+					color="secondary"
+					height="40px"
+					class="text-h6 font-weight-bold px-8"
+					>清除</v-btn
+				>
+			</div>
+		</validation-observer>
 	</v-form>
 </template>
 
@@ -183,6 +228,7 @@ export default {
 						{ root: true }
 					);
 				}
+				this.resetFormValidate();
 			}
 		},
 
@@ -192,6 +238,10 @@ export default {
 			} else {
 				this.participants = this.filterdUsers.map((item) => item.id);
 			}
+		},
+
+		resetFormValidate() {
+			this.$refs.observer.reset();
 		}
 	}
 };
