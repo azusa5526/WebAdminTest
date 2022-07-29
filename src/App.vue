@@ -1,7 +1,7 @@
 <template>
 	<v-app>
+		<alert-message />
 		<layout-app-bar />
-
 		<v-main>
 			<router-view />
 		</v-main>
@@ -11,7 +11,7 @@
 <script>
 import LayoutAppBar from './views/layout/LayoutAppBar.vue';
 export default {
-	components: { LayoutAppBar },
+	components: { LayoutAppBar, AlertMessage: () => import('@/components/widget/AlertMessage.vue') },
 	name: 'App',
 
 	data: () => ({
