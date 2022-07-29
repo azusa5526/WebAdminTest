@@ -5,7 +5,7 @@ function resolve(dir) {
 }
 
 module.exports = defineConfig({
-	publicPath: '/bluemine',
+	publicPath: '/app',
 	transpileDependencies: ['vuetify'],
 	css: {
 		loaderOptions: {
