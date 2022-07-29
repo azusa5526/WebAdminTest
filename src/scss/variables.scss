@@ -108,4 +108,7 @@ $headings: (
 	)
 );
 
+// Override Globals Variables
+$data-table-mobile-row-min-height: 40px;
+
 @import 'vuetify/src/styles/styles.sass';

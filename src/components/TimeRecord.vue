@@ -3,7 +3,7 @@
 		<template v-slot:page>
 			<v-card color="basil" class="fill-height">
 				<v-card-title class="accentDarken1 white--text text-center justify-center pa-2 pa-sm-4">
-					<h1 class="font-weight-bold text-body-2 text-sm-h6 keep-word">{{ title }}</h1>
+					<h1 class="font-weight-bold text-body-1 text-sm-h6 keep-word">{{ title }}</h1>
 				</v-card-title>
 
 				<v-tabs v-model="tab" background-color="transparent" color="basil" grow>
