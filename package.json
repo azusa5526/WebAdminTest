@@ -15,6 +15,7 @@
     "noto-sans-tc": "^26.0.0",
     "roboto-fontface": "*",
     "svg-sprite-loader": "^6.0.11",
+    "vee-validate": "^3.4.6",
     "vue": "^2.6.14",
     "vue-axios": "^3.4.1",
     "vue-router": "^3.5.1",
