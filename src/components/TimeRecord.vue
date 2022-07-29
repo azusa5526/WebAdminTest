@@ -29,6 +29,7 @@
 <script>
 import LayoutContentContainer from '@/views/layout/LayoutContentContainer.vue';
 import MultiRecord from '@/components/TabComponents/MultiRecord.vue';
+import Relationship from '@/components/TabComponents/Relationship.vue';
 import Other from '@/components/TabComponents/Other.vue';
 import titleArray from '../../public/title.json';
 
@@ -36,6 +37,7 @@ export default {
 	components: {
 		LayoutContentContainer,
 		MultiRecord,
+		Relationship,
 		Other
 	},
 	name: 'TimeRecord',
