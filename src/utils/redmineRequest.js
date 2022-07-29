@@ -16,9 +16,12 @@ const instance = axios.create({
 // request interceptor
 instance.interceptors.request.use(
 	(config) => {
-		const token = process.env.VUE_APP_REDMINE_KEY;
-		if (token) {
-			config.headers['X-Redmine-API-Key'] = token;
+		// console.log('request interceptor config.headers', config.headers);
+		if (!config.headers['X-Redmine-API-Key']) {
+			const key = process.env.VUE_APP_REDMINE_KEY;
+			if (key) {
+				config.headers['X-Redmine-API-Key'] = key;
+			}
 		}
 		return config;
 	},
@@ -32,24 +35,16 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
 	(response) => response,
 	(error) => {
-		if (error.response) {
-			const errorMessage = error.response?.data ? error.response.data.error.message : error.message;
-			store.dispatch(
-				'alert/updateMessage',
-				{
-					message: `發生錯誤 (${error.response.status}) ${errorMessage}`,
-					status: 'error'
-				},
-				{ root: true }
-			);
-			// switch (error.response.status) {
-			// 	case 401:
-			// 		console.log('axios 401');
-			// 		removeItem(`token`);
-			// 		router.push('/');
-			// 		break;
-			// }
-		}
+		// if (error.response) {
+		// 	store.dispatch(
+		// 		'alert/updateMessage',
+		// 		{
+		// 			message: `發生錯誤 (${error.response.status}) ${error.response.statusText}`,
+		// 			status: 'error'
+		// 		},
+		// 		{ root: true }
+		// 	);
+		// }
 
 		if (error.code === 'ECONNABORTED') {
 			if (Object.prototype.hasOwnProperty.call(error.config, 'dontUpdateMessage') && error.config.dontUpdateMessage !== true) {
