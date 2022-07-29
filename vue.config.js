@@ -5,7 +5,7 @@ function resolve(dir) {
 }
 
 module.exports = defineConfig({
-	publicPath: '/redmine',
+	publicPath: '/bluemine',
 	transpileDependencies: ['vuetify'],
 	css: {
 		loaderOptions: {
@@ -36,7 +36,7 @@ module.exports = defineConfig({
 		config.module.rule('images').exclude.add(resolve('src/assets/icon'));
 
 		config.plugin('html').tap((args) => {
-			args[0].title = 'Redmine';
+			args[0].title = 'Bluemine';
 			return args;
 		});
 	}

@@ -66,11 +66,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.basil {
-	background-color: #ffffff !important;
-}
-.basil--text {
-	color: #356859 !important;
-}
-</style>
+<style lang="scss" scoped></style>
